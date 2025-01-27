@@ -1,5 +1,8 @@
+
+
 class Booking{
     constructor(Name, Email, CheckIn, CheckOut, Discount, Room){
+        this.Validate(Name, Email, CheckIn, CheckOut, Discount, Room)
         this.Name = "";
         this.Email = "";
         this.CheckIn = CheckIn;
@@ -8,9 +11,32 @@ class Booking{
         this.Room = {};
     }
 
-    isWithin(date) {
-        return date >= this.CheckIn && date <= this.CheckOut;
-      }
+    get fee (){
+
+        return true
+    }
+    Validate(Name, Email, CheckIn, CheckOut, Discount, Room){
+        if(typeof Name !== "string"){
+            throw new Error("Error en el tipo de dato del nombre");
+        } 
+        if(Name.length < 2){
+            throw new Error("Error longitud minima no alcanzada");
+        }
+        if(Name.length > 256){
+            throw new Error("Error nombre demasiado largo");
+        }
+        if(typeof Email !== "string"){
+            throw new Error("Error en el tipo de datos del email")
+        }
+        if(Email.length >= 50){
+            throw new Error("Error email demasiado largo")
+        }
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        if(!regex.test(Email)){
+            throw new Error("Error estructura email")
+        }
+        
+    }
 }
 
 
@@ -24,18 +50,19 @@ class Room {
         this.rate = rate;
         this.discount = discount;
     }
-
     isOccupied(date){
-        for (let booking of this.Bookings) {
-            if (booking.isWithin(date)){
-                return true
-            }
-        }
-        return false;
+        return true
     }
-    static totalOccupancyPercentage(rooms, date1, date2){
+    occupancyPercentage(startDate, endDate){
+        return true
+    }
+    static totalOccupancyPercentage(rooms, startDate, endDate) {
+        return true
+    }
+    static availableRooms(rooms, startDate, endDate){
+        return true
+    }
 
-    }
 }
 
 module.exports = {Room, Booking};
