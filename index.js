@@ -1,20 +1,22 @@
 
 
 class Booking{
-    constructor(Name, Email, CheckIn, CheckOut, Discount, Room){
-        this.Validate(Name, Email, CheckIn, CheckOut, Discount, Room)
-        this.Name = "";
-        this.Email = "";
-        this.CheckIn = CheckIn;
-        this.CheckOut = CheckOut;
-        this.Discount = Discount;
-        this.Room = {};
+    constructor(BookingName, BookingEmail, BookingCheckIn, BookingCheckOut, BookingDiscount, BookingRoom){
+        this.Validate(BookingName, BookingEmail, BookingCheckIn, BookingCheckOut, BookingDiscount, BookingRoom)
+        this.BookingName = "";
+        this.BookingEmail = "";
+        this.BookingCheckIn = CheckIn;
+        this.BookingCheckOut = CheckOut;
+        this.BookingDiscount = Discount;
+        this.BookingRoom = {};
     }
 
     get fee (){
-
-        return true
+        let roomPrice = this.RoomRate * (1 - this.RoomDiscount / 100)
+        let totalFee = roomPrice * (1 - this.BookingDiscount)
+        return totalFee;
     }
+    
     Validate(Name, Email, CheckIn, CheckOut, Discount, Room){
         if(typeof Name !== "string"){
             throw new Error("Error en el tipo de dato del nombre");
@@ -58,11 +60,12 @@ class Booking{
 
 class Room {
     
-    constructor(name,Bookings,rate,discount){
-        this.name = "";
-        this.Bookings = [];
-        this.rate = rate;
-        this.discount = discount;
+    constructor(RoomName,RoomBookings,RoomRate,RoomDiscount){
+        this.ValidateRoom(RoomName,RooomBookings,RoomRate,RoomDiscount)
+        this.RoomName = "";
+        this.RoomBookings = [];
+        this.RoomRate = rate;
+        this.RoomDiscount = discount;
     }
     isOccupied(date){
         return true
@@ -75,6 +78,35 @@ class Room {
     }
     static availableRooms(rooms, startDate, endDate){
         return true
+    }
+    ValidateRoom(name,Bookings,rate,discount){
+        if(typeof name !== "string"){
+            throw new Error ("Error en el tipo de dato del nombre")
+        }
+        if(RoomName.length < 2){
+            throw new Error("Nombre demasiado corto");
+        }
+        if(this.RoomName.length >= 50){
+            throw new Error("Error en la longitud del nombre");
+        }
+        if(!Array.isArray(RoomBookings)){
+            throw new Error ("Error con el tipo de propiedad de Booking")
+        }
+        if(typeof RoomRate !== "number"){
+            throw new Error("Error en el tipo de dato de Rate")
+        }
+        if(RoomRate <= 0){
+            throw new Error("Valor de Rate demasiado bajo")
+        }
+        if(RoomRate >= 1001){
+            throw new Error("Valor de Rate demasiado grande")
+        }
+        if(typeof RoomDiscount !== "number"){
+            throw new Error("Error en el tipo de dato de Discount")
+        }
+        if(typeof RoomDiscount < 0 || discount > 100 || discount % 1 !== 0){
+            throw new Error("Error Discount debe ser un número entero")
+        }
     }
 
 }

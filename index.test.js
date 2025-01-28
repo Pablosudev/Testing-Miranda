@@ -8,6 +8,8 @@ const validBooking = [
 
 
 
+//TEST BOOKINGS:
+
 describe("Comprobaciones de Bookings", () => {
     describe("Comprobación propiedad Nombre", () => {
         test("Comprobamos otro tipo de dato", () => {
@@ -92,8 +94,7 @@ describe("Comprobaciones de Bookings", () => {
     })
 })
 
-
-
+//TEST ROOMS:
 
 describe("Comprobaciones Rooms", () => {
     describe("Comprobamos propiedad de name" , () => {
@@ -104,16 +105,57 @@ describe("Comprobaciones Rooms", () => {
             expect(() => new Room(null, validBooking, 10000, 10)).toThrow("Error en el tipo de dato del nombre")
         })
         test("Comprobamos la longitud mínima de name", () => {
-            expect(() => new Room("", validBooking, 10000, 10)).toThrow("Nombre demasiado corto")
+            expect(() => new Room("", validBooking, 199, 10)).toThrow("Nombre demasiado corto")
         })
         test("Comprobamos la longitud de name", () => {
             const name = "A".repeat(50)
             expect(() => new Room(name, validBooking, 10000, 10)).toThrow("Error en la longitud del nombre")
         })
         test("Test comprobado con éxito", () => {
-            expect(() => new Room("Pablo", validBooking, 10000, 10)).not.toThrow()
+            expect(() => new Room("Pablo", validBooking, 199, 10)).not.toThrow()
         })
     })
-
-
+    describe("Comprobamos propiedad de Booking", () => {
+        test("Comprobamos que booking sea un array de objetos", () => {
+            expect(() => new Room("Pablo", "gfndj", 10000, 10)).toThrow("Error con el tipo de propiedad de Booking")
+            expect(() => new Room("Pablo", {}, 10000, 10)).toThrow("Error con el tipo de propiedad de Booking")
+            expect(() => new Room("Pablo", 21, 10000, 10)).toThrow("Error con el tipo de propiedad de Booking")
+            expect(() => new Room("Pablo", true, 10000, 10)).toThrow("Error con el tipo de propiedad de Booking")
+        })
+        test("Test comprobado con éxito", () => {
+            expect(() => new Room("Pablo", validBooking, 199, 10)).not.toThrow()
+        })
+    })
+    describe("Comprobamos la propiedad de rate", () => {
+        test("Comprobamos que Rate se un número", () => {
+            expect(() => new Room("Pablo", validBooking, "dfa", 10)).toThrow("Error en el tipo de dato de Rate")
+            expect(() => new Room("Pablo", validBooking, {}, 10)).toThrow("Error en el tipo de dato de Rate")
+            expect(() => new Room("Pablo", validBooking, null, 10)).toThrow("Error en el tipo de dato de Rate")
+            expect(() => new Room("Pablo", validBooking, true, 10)).toThrow("Error en el tipo de dato de Rate")
+        })
+        test("Comprobamos el valor minimo de Rate", () => {
+            expect(() => new Room("Pablo", validBooking, 0 , 10)).toThrow("Valor de Rate demasiado bajo")
+        })
+        test("Comprobamos el valor máximo de Rate", () => {
+            expect(() => new Room("Pablo", validBooking, 100000000 , 10)).toThrow("Valor de Rate demasiado grande")
+        })
+        test("Test comprobado con éxito", () => {
+            expect(() => new Room("Pablo", validBooking, 199, 10)).not.toThrow()
+        })
+    })
+    describe("Comprobamos la propiedad de Discount", () => {
+        test("Comprobamos el dato del Discount", () => {
+            expect(() => new Room("Pablo", validBooking, 199, true)).toThrow("Error en el tipo de dato de Discount")
+            expect(() => new Room("Pablo", validBooking, 199, "hola")).toThrow("Error en el tipo de dato de Discount")
+            expect(() => new Room("Pablo", validBooking, 199, {})).toThrow("Error en el tipo de dato de Discount")
+            expect(() => new Room("Pablo", validBooking, 199, null)).toThrow("Error en el tipo de dato de Discount")
+        })
+        test("Comprobamos que el porcentaje de Discount tiene que ser un numero entero", () => {
+            expect(() => new Room("Pablo", validBooking, 199, 10.58)).toThrow("Error Discount debe ser un número entero")
+        })
+        test("Test comprobado con éxito", () => {
+            expect(() => new Room("Pablo", validBooking, 199, 60)).not.toThrow()
+        })
+    })
+   
 })
