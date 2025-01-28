@@ -47,6 +47,9 @@ class Booking{
         if(Discount > 100){
             throw new Error("Descuento demasiado grande")
         }
+        if(typeof Room !== 'object'){
+            throw new Error ("Tipo de dato de habitación incorrecto")
+        }
     }
 }
 

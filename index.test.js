@@ -1,5 +1,10 @@
 const {Room , Booking} = require("./index")
-const validRoom = {Name: "room1", Bookings: [], rate:10000, discount: 10}
+const validRoom = {Name: "room1", Bookings: [], rate:10000, discount: 10};
+const validBooking = [
+    {name: "Pepe", email: "email@email.com", CheckIn: new Date(), CheckOut: new Date(), Discount:10, room: validRoom},
+    {name: "Alejandro", email: "email@email.com", CheckIn: new Date(), CheckOut: new Date(),  Discount:10, room: validRoom}
+];
+
 
 
 
@@ -78,5 +83,37 @@ describe("Comprobaciones de Bookings", () => {
             expect (() => new Booking ("Pablo", "email@email.com", new Date(), new Date(), 101, validRoom)).toThrow("Descuento demasiado grande");
         })
     })
-    
+    describe("Comprobacion propiedad room", () => {
+        test("Comprobamos otro tipo de dato", () => {
+            expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), 10,"")).toThrow("Tipo de dato de habitación incorrecto");
+            expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), 10, true)).toThrow("Tipo de dato de habitación incorrecto");
+            expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), 10, 1215)).toThrow("Tipo de dato de habitación incorrecto");
+        })
+    })
+})
+
+
+
+
+describe("Comprobaciones Rooms", () => {
+    describe("Comprobamos propiedad de name" , () => {
+        test("Comprobamos que name sea un String", () => {
+            expect(() => new Room(true, validBooking, 10000, 10)).toThrow("Error en el tipo de dato del nombre")
+            expect(() => new Room(124, validBooking, 10000, 10)).toThrow("Error en el tipo de dato del nombre")
+            expect(() => new Room({}, validBooking, 10000, 10)).toThrow("Error en el tipo de dato del nombre")
+            expect(() => new Room(null, validBooking, 10000, 10)).toThrow("Error en el tipo de dato del nombre")
+        })
+        test("Comprobamos la longitud mínima de name", () => {
+            expect(() => new Room("", validBooking, 10000, 10)).toThrow("Nombre demasiado corto")
+        })
+        test("Comprobamos la longitud de name", () => {
+            const name = "A".repeat(50)
+            expect(() => new Room(name, validBooking, 10000, 10)).toThrow("Error en la longitud del nombre")
+        })
+        test("Test comprobado con éxito", () => {
+            expect(() => new Room("Pablo", validBooking, 10000, 10)).not.toThrow()
+        })
+    })
+
+
 })
