@@ -35,7 +35,18 @@ class Booking{
         if(!regex.test(Email)){
             throw new Error("Error estructura email")
         }
-        
+        if(!(CheckIn instanceof Date)){
+            throw new Error("Error en el tipo de datos de la fecha Check-In")
+        }
+        if(!(CheckOut instanceof Date)){
+            throw new Error("Error en el tipo de datos de la fecha Check-Out")
+        }
+        if(typeof Discount !== 'number'){
+            throw new Error("Error en el tipo de datos del Discount")
+        }
+        if(Discount > 100){
+            throw new Error("Descuento demasiado grande")
+        }
     }
 }
 

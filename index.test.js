@@ -52,13 +52,19 @@ describe("Comprobaciones de Bookings", () => {
             expect(() => new Booking("Pablo", "email@email.com", [], new Date(), 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-In");
             expect(() => new Booking("Pablo", "email@email.com", true, new Date(), 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-In");
         });
+        test("Comprobación con éxito de Check-In", () => {
+            expect (() => new Booking ("Pablo", "email@email.com", new Date(), new Date(), 10, validRoom)).not.toThrow()
+        });
     })
     describe("Comprobacion propiedad Check.Out", () => {
         test("Comprobamos otro tipo dato", () => {
-            expect(() => new Booking("Pablo", "email@email.com", new Date(), 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-Out");
+            expect(() => new Booking("Pablo", "email@email.com", new Date(), "", 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-Out");
             expect(() => new Booking("Pablo", "email@email.com", new Date(),true, 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-Out");
             expect(() => new Booking("Pablo", "email@email.com", new Date(), [], 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-Out");
             expect(() => new Booking("Pablo", "email@email.com", new Date(), null, 10, validRoom)).toThrow("Error en el tipo de datos de la fecha Check-Out");
+        });
+        test("Comprobación con éxito de Check-Out", () => {
+            expect (() => new Booking ("Pablo", "email@email.com", new Date(), new Date(), 10, validRoom)).not.toThrow()
         });
     })
     describe("Comprobacion propiedad Discount", () => {
@@ -67,6 +73,9 @@ describe("Comprobaciones de Bookings", () => {
             expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), {}, validRoom)).toThrow("Error en el tipo de datos del Discount");
             expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), null, validRoom)).toThrow("Error en el tipo de datos del Discount");
             expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), true, validRoom)).toThrow("Error en el tipo de datos del Discount");
+        });
+        test("Comrpobamos que el descuento no sea mayor del 100%", () => {
+            expect (() => new Booking ("Pablo", "email@email.com", new Date(), new Date(), 101, validRoom)).toThrow("Descuento demasiado grande");
         })
     })
     
