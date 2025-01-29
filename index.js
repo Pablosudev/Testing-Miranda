@@ -24,9 +24,11 @@ class Booking {
   }
 
   getFee() {
-    let roomPrice = this.RoomRate * (1 - this.RoomDiscount / 100);
-    let totalFee = roomPrice * (1 - this.BookingDiscount / 100);
-    return totalFee;
+    let roomDiscount = this.BookingRoom.RoomRate * ( this.BookingRoom.RoomDiscount / 100);
+    let roomPrice = this.BookingRoom.RoomRate - roomDiscount;
+    let totalDiscount = roomPrice * ( this.BookingDiscount / 100);
+    let Discount = roomPrice - totalDiscount 
+    return Discount;
   }
 
   Validate(
@@ -73,6 +75,7 @@ class Booking {
     }
   }
 }
+
 
 class Room {
   constructor(RoomName, RoomBookings, RoomRate, RoomDiscount) {

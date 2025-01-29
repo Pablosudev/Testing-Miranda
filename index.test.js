@@ -94,9 +94,9 @@ describe("Comprobaciones de Bookings", () => {
     })
     describe("Comprobamos el método fee", () => {
         test("GetFee", () => {
-            const room = new Room("Pablo", validBooking, 1000, 10);
+            const room = new Room("Pablo", [], 1000, 10);
             const booking = new Booking("Pepe", "email@email.com", new Date(2025-10-28),  new Date(2025-10-30), 10,  room)
-            expect(booking.getFee()).toBe(8100);  
+            expect(booking.getFee()).toBe(810);  
         });
     })
     
