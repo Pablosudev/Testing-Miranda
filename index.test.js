@@ -180,7 +180,81 @@ describe("Comprobaciones Rooms", () => {
             expect(room.isOccupied(new Date(2026, 9, 29))).toBe(false);
         })
     });
+    describe("Comprobamos el método occupancyPercentage", () => {
+        test("occupancyPercentage ", () => {
+            const room = new Room("Pablo", [] , 1000, 10);
+            const booking = new Booking("Pepe", "email@email.com", new Date(2025, 9, 28), new Date(2025, 9, 30), 10, room);
+            room.RoomBookings.push(booking)
+            expect(room.occupancyPercentage()).toBe(0.55)
+        })
+        test("OccupancyPercentaje este al 100%", () => {
+            const room = new Room("Pablo", [] , 1000, 10);
+            const booking = new Booking("Pepe", "email@email.com", new Date(2024, 12, 31), new Date(2025, 12, 31), 10, room);
+            room.RoomBookings.push(booking)
+            expect(room.occupancyPercentage()).toBe(100)
+        })
+    })
+    describe("Comprobamos el método TotalOccupancy",() => {
+        test("TotalOccupancy devuelve el porcentaje correcto", () => {
+            
+            const room1 = new Room("Pablo", [], 1000, 10);
+            const booking1 = new Booking("Pepe", "email@email.com", new Date(2025, 9, 1), new Date(2025, 9, 10), 10, room1);
+            room1.RoomBookings.push(booking1);
+        
+            const room2 = new Room("Ana", [], 1000, 10);
+            const booking2 = new Booking("Juan", "juan@email.com", new Date(2025, 9, 5), new Date(2025, 9, 15), 15, room2);
+            room2.RoomBookings.push(booking2);
+        
+            const rooms = [room1, room2];
+            const startDate = new Date(2025, 9, 1);
+            const endDate = new Date(2025, 9, 15);
+
+            expect(Room.totalOccupancyPercentage(rooms, startDate, endDate)).toBeCloseTo(2.60);
+        });
+        test("TotalOccupancy devuelve el porcentaje al 49.58%", () => {
+            
+            const room1 = new Room("Pablo", [], 1000, 10);
+            const booking1 = new Booking("Pepe", "email@email.com", new Date(2024, 12, 31), new Date(2025, 6, 31), 10, room1);
+            room1.RoomBookings.push(booking1);
+        
+            const room2 = new Room("Ana", [], 1000, 10);
+            const booking2 = new Booking("Juan", "juan@email.com", new Date(2024, 12, 31), new Date(2025, 6, 31), 15, room2);
+            room2.RoomBookings.push(booking2);
+        
+            const rooms = [room1, room2];
+            const startDate = new Date(2024, 12, 31);
+            const endDate = new Date(2025, 6, 31);
+            
+            expect(Room.totalOccupancyPercentage(rooms, startDate, endDate)).toBeCloseTo(49.58);
+        });
+    })
+    describe("Comprobamos el método availableRooms", () => {
+        test("Devuelve solo las habitaciones disponibles", () => {
+            // Crear habitaciones
+            const room1 = new Room("Habitación 1", [], 1000, 10);
+            const room2 = new Room("Habitación 2", [], 1000, 10);
+            const room3 = new Room("Habitación 3", [], 1000, 10);
     
+            // Crear reservas
+            const booking1 = new Booking("Pepe", "pepe@email.com", new Date(2025, 9, 1), new Date(2025, 9, 10), 10, room1);
+            const booking2 = new Booking("Juan", "juan@email.com", new Date(2025, 9, 5), new Date(2025, 9, 15), 15, room2);
     
-   
+            // Asignar reservas a las habitaciones
+            room1.RoomBookings.push(booking1);
+            room2.RoomBookings.push(booking2);
+    
+            // Habitación 3 no tiene reservas, así que está disponible
+            const rooms = [room1, room2, room3];
+    
+            const startDate = new Date(2025, 9, 5);  // 5 de octubre
+            const endDate = new Date(2025, 9, 12);  // 12 de octubre
+    
+            // Llamar a la función availableRooms para obtener las habitaciones disponibles
+            const availableRooms = Room.availableRooms(rooms, startDate, endDate);
+    
+            // Comprobar que la habitación 3 está disponible (no tiene reservas)
+            expect(availableRooms).toEqual([room3]);
+        });
+    
+    });
 })

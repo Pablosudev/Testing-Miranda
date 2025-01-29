@@ -87,27 +87,83 @@ class Room {
   }
   isOccupied(date) {
     for (let booking of this.RoomBookings) {
-      // Verificamos si la fecha está dentro del rango de la reserva
+      
       if (booking.BookingCheckIn <= date && booking.BookingCheckOut >= date) {
-        return true;  // Si la fecha está dentro del rango de alguna reserva, la habitación está ocupada
+        return true;  
       }
     }
-    return false;  // Si no hay ninguna reserva que se solape con la fecha, la habitación no está ocupada
+    return false;  
   }
 
   occupancyPercentage() {
+    let totalBookedDays = 0; 
+    for (let booking of this.RoomBookings) {
+      const bookedDays = (booking.BookingCheckOut - booking.BookingCheckIn) / (1000 * 60 * 60 * 24); 
+      totalBookedDays += bookedDays;
+    }
+    const occupancy = (totalBookedDays * 100) / 365;
+    return parseFloat(occupancy.toFixed(2));
+}
 
-    const bookedDays = this.BookingCheckOut - this.BookingCheckIn;
-    const occupancy = (bookedDays * 100) / 365;
-
-    return occupancy;
-  }
   static totalOccupancyPercentage(rooms, startDate, endDate) {
-    return true;
+    let totalBookedDays = 0;  
+    let totalAvailableDays = 0;  
+
+    
+    for (let room of rooms) {
+        
+        for (let booking of room.RoomBookings) {
+            
+            const bookingStart = booking.BookingCheckIn;
+            const bookingEnd = booking.BookingCheckOut;
+
+            
+            const overlapStart = bookingStart > startDate ? bookingStart : startDate;
+            const overlapEnd = bookingEnd < endDate ? bookingEnd : endDate;
+
+            
+            if (overlapStart < overlapEnd) {
+                
+              const bookedDays = (overlapEnd - overlapStart) / (1000 * 60 * 60 * 24); 
+              totalBookedDays += bookedDays;  
+            }
+        }
+      totalAvailableDays += 365;  
+    }
+
+    
+    const totalOccupancy = (totalBookedDays * 100) / totalAvailableDays;
+    return parseFloat(totalOccupancy.toFixed(2));
   }
   static availableRooms(rooms, startDate, endDate) {
-    return true;
-  }
+    const availableRooms = [];
+
+    // Recorremos todas las habitaciones
+    for (let room of rooms) {
+        let isAvailable = true; // Suponemos que la habitación está disponible
+
+        // Recorremos todas las reservas de cada habitación
+        for (let booking of room.RoomBookings) {
+            // Verificamos si la reserva se superpone con el rango de fechas dado
+            const bookingStart = booking.BookingCheckIn;
+            const bookingEnd = booking.BookingCheckOut;
+
+            // Comprobamos si hay superposición de fechas
+            if (bookingStart < endDate && bookingEnd > startDate) {
+                isAvailable = false; // Si hay superposición, la habitación no está disponible
+                break; // No hace falta seguir revisando otras reservas
+            }
+        }
+
+        // Si no se encontró ninguna superposición, la habitación está disponible
+        if (isAvailable) {
+            availableRooms.push(room);
+        }
+    }
+
+    return availableRooms;
+}
+
   ValidateRoom(RoomName, RoomBookings, RoomRate, RoomDiscount) {
     if (typeof RoomName !== "string") {
       throw new Error("Error en el tipo de dato del nombre");
