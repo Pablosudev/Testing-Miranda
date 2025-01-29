@@ -93,11 +93,12 @@ describe("Comprobaciones de Bookings", () => {
         })
     })
     describe("Comprobamos el método fee", () => {
-        test("GetFee", () => {
+        test("GetFee con éxito", () => {
             const room = new Room("Pablo", [], 1000, 10);
             const booking = new Booking("Pepe", "email@email.com", new Date(2025-10-28),  new Date(2025-10-30), 10,  room)
             expect(booking.getFee()).toBe(810);  
         });
+        
     })
     
 })
@@ -164,6 +165,22 @@ describe("Comprobaciones Rooms", () => {
         test("Test comprobado con éxito", () => {
             expect(() => new Room("Pablo", validBooking, 199, 60)).not.toThrow()
         })
-    })    
+    })   
+    describe("Comprobamos el método isOccupied", () => {
+        test("isOccupied devuelve true", () => {
+            const room = new Room("Pablo", [] , 1000, 10);
+            const booking = new Booking("Pepe", "email@email.com", new Date(2025, 9, 28), new Date(2025, 9, 30), 10, room);
+            room.RoomBookings.push(booking)
+            expect(room.isOccupied(new Date(2025, 9, 29))).toBe(true);
+        });
+        test("isOcupied devuelve false al poner una fecha libre", () => {
+            const room = new Room("Pablo", [] , 1000, 10);
+            const booking = new Booking("Pepe", "email@email.com", new Date(2025, 9, 28), new Date(2025, 9, 30), 10, room);
+            room.RoomBookings.push(booking)
+            expect(room.isOccupied(new Date(2026, 9, 29))).toBe(false);
+        })
+    });
+    
+    
    
 })

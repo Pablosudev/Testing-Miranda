@@ -86,10 +86,13 @@ class Room {
     this.RoomDiscount = RoomDiscount;
   }
   isOccupied(date) {
-    if (this.BookingCheckIn <= date && this.BookingCheckOut >= date) {
-      return true;
+    for (let booking of this.RoomBookings) {
+      // Verificamos si la fecha está dentro del rango de la reserva
+      if (booking.BookingCheckIn <= date && booking.BookingCheckOut >= date) {
+        return true;  // Si la fecha está dentro del rango de alguna reserva, la habitación está ocupada
+      }
     }
-    return false;
+    return false;  // Si no hay ninguna reserva que se solape con la fecha, la habitación no está ocupada
   }
 
   occupancyPercentage() {
