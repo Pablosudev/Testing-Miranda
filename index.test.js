@@ -1,8 +1,8 @@
 const {Room , Booking} = require("./index")
-const validRoom = {Name: "room1", Bookings: [], rate:10000, discount: 10};
+const validRoom = {RoomName: "room1", RoomBookings: [], RoomRate:10000, RoomDiscount: 10};
 const validBooking = [
-    {name: "Pepe", email: "email@email.com", CheckIn: new Date(), CheckOut: new Date(), Discount:10, room: validRoom},
-    {name: "Alejandro", email: "email@email.com", CheckIn: new Date(), CheckOut: new Date(),  Discount:10, room: validRoom}
+    {BookingName: "Pepe", BookingEmail: "email@email.com", BookingCheckIn: new Date(), BookingCheckOut: new Date(), BookingDiscount:10, BookingRoom: validRoom},
+    {BookingName: "Alejandro", BookingEmail: "email@email.com", BookingCheckIn: new Date(), BookingCheckOut: new Date(),  BookingDiscount:10, BookingRoom: validRoom}
 ];
 
 
@@ -92,6 +92,14 @@ describe("Comprobaciones de Bookings", () => {
             expect(() => new Booking("Pablo", "email@email.com", new Date(), new Date(), 10, 1215)).toThrow("Tipo de dato de habitación incorrecto");
         })
     })
+    describe("Comprobamos el método fee", () => {
+        test("GetFee", () => {
+            const room = new Room("Pablo", validBooking, 1000, 10);
+            const booking = new Booking("Pepe", "email@email.com", new Date(2025-10-28),  new Date(2025-10-30), 10,  room)
+            expect(booking.getFee()).toBe(8100);  
+        });
+    })
+    
 })
 
 //TEST ROOMS:
@@ -156,6 +164,6 @@ describe("Comprobaciones Rooms", () => {
         test("Test comprobado con éxito", () => {
             expect(() => new Room("Pablo", validBooking, 199, 60)).not.toThrow()
         })
-    })
+    })    
    
 })
